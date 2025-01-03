@@ -1,0 +1,17 @@
+{
+  "name": "digital-time-capsule",
+  "version": "1.0.0",
+  "description": "Message Your Future Self: A Time Capsule for Your Thoughts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Leroy Patient",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.9.3",
+    "node-cron": "^3.0.3"
+  }
+}
