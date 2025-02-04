@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Message Your Future Self: A Time Capsule for Your Thoughts",
   "main": "index.js",
+  "type":"module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":"node index.js",
+    "dev":"nodemon index.js"
   },
   "keywords": [],
   "author": "Leroy Patient",
@@ -13,5 +15,8 @@
     "express": "^4.21.2",
     "mongoose": "^8.9.3",
     "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

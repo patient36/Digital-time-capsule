@@ -1,5 +1,9 @@
 # Message Your Future Self: A Digital Time Capsule for Your Thoughts
 
+## ⚠️ Warning
+
+This site is still under **development**
+
 ## Description
 
 **Message Your Future Self** allows you to send messages, reflections, and goals to your future self. It's a digital time capsule where you can capture your thoughts, aspirations, and life updates today and revisit them in the future.
@@ -27,4 +31,12 @@ To run this app locally:
 1. Clone the repository:
    ```bash
    git clone https://github.com/patient36/Digital-time-capsule.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the app:
+   ```bash
+   npm run dev
    ```
