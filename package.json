@@ -3,17 +3,22 @@
   "version": "1.0.0",
   "description": "Message Your Future Self: A Time Capsule for Your Thoughts",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-    "start":"node index.js",
-    "dev":"nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Leroy Patient",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.3",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^5.0.9",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {
