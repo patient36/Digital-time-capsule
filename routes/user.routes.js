@@ -6,6 +6,6 @@ const userRouter = express.Router()
 
 userRouter.post('/auth/register', userControllers.registerUser)
 userRouter.post('/auth/login', userControllers.authUser)
-userRouter.post('/logout', userControllers.logoutUser)
+userRouter.post('/logout',protect, userControllers.logoutUser)
 
 export default userRouter
