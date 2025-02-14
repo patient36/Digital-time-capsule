@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import connectDB from "./config/db.js"
 import { notFound, errorHandler } from "./middlewares/error.js"
 import authRouter from "./routes/auth.routes.js"
+import capsuleRouter from "./routes/capsule.routes.js"
 
 dotenv.config()
 connectDB()
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors({ origin: process.env.CLIENT }))
 app.use(cookieParser())
 app.use('/api/user/auth', authRouter)
+app.use('/api/capsule', capsuleRouter)
 app.use(notFound)
 app.use(errorHandler)
 
