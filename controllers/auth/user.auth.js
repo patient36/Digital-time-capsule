@@ -85,15 +85,15 @@ const resetPassword = async (req, res, next) => {
         if (!email?.trim() || !oldPassword?.trim() || !newPassword?.trim()) {
             return res.status(400).json({ message: "Email, old password, and new password are required." });
         }
-
-        const user = await User.findOne({ email });
+        const userId = req.user._id
+        const user = await User.findOne({ email, _id: userId });
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
         const match = await user.matchPasswords(oldPassword);
         if (!match) {
-            return res.status(401).json({ message: "Old password is incorrect." });
+            return res.status(400).json({ message: "Old password is incorrect." });
         }
 
         user.password = newPassword;
