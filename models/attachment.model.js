@@ -9,7 +9,7 @@ const attachmentSchema = new mongoose.Schema({
 
 const attachmentChunksSchema = mongoose.Schema({
     files_id: {
-        type: mongoose.Schema.Types.Objectid,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Attachment"
     },

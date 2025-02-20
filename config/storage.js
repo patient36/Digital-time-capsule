@@ -4,7 +4,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1024 * 1024 * 5 },
+    limits: { fileSize: 1024 * 1024 * 100 },
     fileFilter(req, file, cb) {
         const allowedExtensions = [
             "wav", "mp3", "aac", "m4a", "flac", "ogg", "wma", "alac", "aiff", "amr", "opus", "mid", "midi", "dsd", "dff",

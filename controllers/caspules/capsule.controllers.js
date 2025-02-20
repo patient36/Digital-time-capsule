@@ -2,38 +2,62 @@ import { nanoid } from "nanoid";
 import Capsule from "../../models/capsule.model.js";
 import User from "../../models/user.model.js";
 import { encrypt, decrypt } from "../../utils/encrpyt.js";
+import { Attachment, AttachmentChunk } from "../../models/attachment.model.js";
+import createFile from "../../utils/createFile.js";
+import deleteFile from "../../utils/deleteFile.js"
 
 const createCapsule = async (req, res, next) => {
     try {
-        const userId = req.user._id
-        const { message, deliveryDate } = req.body
-        if (!message || !deliveryDate) {
-            return res.status(400).json({ message: "Some crucial data about the capsule are missing" })
-        }
-        if (new Date(deliveryDate) <= Date.now()) {
-            return res.status(403).json({ message: "Set a future date for delivery" })
-        }
-        const user = await User.findById(userId)
-        if (!user) {
-            return res.status(404).json({ message: "User does not exist" })
-        }
-        const key = nanoid(10)
-        const files = req.files.attachment
-        if (files) {
-            files.forEach(file => {
-                console.log(file.originalname)
-            });
-        }
-        const encrypted = encrypt(message, key)
-        const capsule = await Capsule.create({
-            message: encrypted, deliveryDate, userId, key
-        })
+        const userId = req.user._id;
+        const { message, deliveryDate } = req.body;
 
-        res.status(201).json({ capsule, message: "Capsule created successfully" })
+        if (!message || !deliveryDate) {
+            return res.status(400).json({ message: "Some crucial data about the capsule are missing" });
+        }
+
+        // Validate deliveryDate as a proper future date
+        const deliveryDateObj = new Date(deliveryDate);
+        if (isNaN(deliveryDateObj.getTime()) || deliveryDateObj <= Date.now()) {
+            return res.status(403).json({ message: "Set a valid future date for delivery" });
+        }
+
+        // Validate user existence
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User does not exist" });
+        }
+
+        const key = nanoid(10);
+        const attachments = [];
+
+        // Handle file uploads properly with async/await
+        if (req.files?.attachment) {
+            const files = Array.isArray(req.files.attachment) ? req.files.attachment : [req.files.attachment];
+
+            const attachmentPromises = files.map(file => createFile(file, Attachment, AttachmentChunk));
+            const savedAttachments = await Promise.all(attachmentPromises);
+
+            attachments.push(...savedAttachments);
+        }
+
+        // Encrypt message
+        const encrypted = encrypt(message, key);
+
+        // Create the capsule
+        const capsule = await Capsule.create({
+            message: encrypted,
+            deliveryDate,
+            userId,
+            key,
+            attachments,
+        });
+
+        res.status(201).json({ capsule, message: "Capsule created successfully" });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
+
 
 const getPendingCapsules = async (req, res, next) => {
     try {
@@ -194,7 +218,13 @@ const deleteCapsule = async (req, res, next) => {
             return res.status(404).json({ message: "Failed to delete a non-existing capsule" })
         }
 
-        // delete all attachments
+        if (capsule.attachments.length > 0) {
+            const files = capsule.attachments
+
+            const attachmentPromises = files.map(file => deleteFile(file, Attachment, AttachmentChunk));
+            const savedAttachments = await Promise.all(attachmentPromises);
+        }
+
         await Capsule.deleteOne({ _id: capId })
         res.status(200).json({ message: `deleted a ${capsule.status} capsule  ` })
     } catch (error) {
