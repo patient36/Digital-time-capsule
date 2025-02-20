@@ -34,7 +34,7 @@ const createCapsule = async (req, res, next) => {
         if (req.files?.attachment) {
             const files = Array.isArray(req.files.attachment) ? req.files.attachment : [req.files.attachment];
 
-            const attachmentPromises = files.map(file => createFile(file, Attachment, AttachmentChunk));
+            const attachmentPromises = files.map(file => createFile(file, Attachment, AttachmentChunk, userId));
             const savedAttachments = await Promise.all(attachmentPromises);
 
             attachments.push(...savedAttachments);
@@ -221,7 +221,7 @@ const deleteCapsule = async (req, res, next) => {
         if (capsule.attachments.length > 0) {
             const files = capsule.attachments
 
-            const attachmentPromises = files.map(file => deleteFile(file, Attachment, AttachmentChunk));
+            const attachmentPromises = files.map(file => deleteFile(file, Attachment, AttachmentChunk, userId));
             const savedAttachments = await Promise.all(attachmentPromises);
         }
 

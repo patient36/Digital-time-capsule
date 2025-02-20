@@ -5,6 +5,7 @@ const attachmentSchema = new mongoose.Schema({
     contentType: { type: String, required: true },
     length: { type: Number, required: true },
     chunkSize: { type: Number, required: true },
+    owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" }
 }, { timestamps: true })
 
 const attachmentChunksSchema = mongoose.Schema({
