@@ -46,7 +46,7 @@ const getPendingCapsules = async (req, res, next) => {
         const skip = (page - 1) * limit;
         const totalCaps = await Capsule.countDocuments({ userId, status: "pending" })
         const totalPages = Math.ceil(totalCaps / limit)
-        
+
         if (page > totalPages) {
             let pending = []
             return res.status(200).json({
@@ -55,7 +55,7 @@ const getPendingCapsules = async (req, res, next) => {
                     totalPages,
                     pageSize: pending.length,
                     page,
-                    message:"page not found"
+                    message: "page not found"
                 },
                 data: {
                     pending
@@ -107,7 +107,7 @@ const getDeliveredCapsules = async (req, res, next) => {
                     totalPages,
                     pageSize: delivered.length,
                     page,
-                    message:"page not found"
+                    message: "page not found"
                 },
                 data: {
                     delivered
@@ -136,14 +136,39 @@ const getDeliveredCapsules = async (req, res, next) => {
 const getCapsule = async (req, res, next) => {
     try {
         const capId = req.params.id
-        // extract userId from the token
-        const capsule = await Capsule.findById(capId)
+        const userId = req.user._id
+
+        if (!userId) {
+            return res.status(401).json({ message: "Invalid token" })
+        }
+
+        const capsule = await Capsule.findOne({ _id: capId, userId })
         if (!capsule) {
             return res.status(404).json({ message: "Capsule not found" })
         }
-        // verify deliveryDate
-        // decrypt message
-        const response = { message: capsule.message, attachments: capsule.attachments, createdAt: capsule.createdAt, deliveryDate: capsule.deliveryDate }
+
+        if (capsule.deliveryDate > new Date()) {
+            const response = {
+                _id: capsule._id,
+                message: "Unavailable",
+                attachments: capsule.attachments,
+                deliveryDate: capsule.deliveryDate,
+                status: capsule.status,
+                createdAt: capsule.createdAt
+            }
+            return res.status(200).json({ response })
+        }
+
+        const response = {
+            _id: capsule._id,
+            message: decrypt(capsule.message, capsule.key),
+            attachments: capsule.attachments,
+            deliveryDate: capsule.deliveryDate,
+            status: capsule.status,
+            createdAt: capsule.createdAt
+        }
+
+
         res.status(200).json({ message: "Successful fetch", response })
     } catch (error) {
         next(error)
