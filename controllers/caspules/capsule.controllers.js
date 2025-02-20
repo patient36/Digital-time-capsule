@@ -18,7 +18,12 @@ const createCapsule = async (req, res, next) => {
             return res.status(404).json({ message: "User does not exist" })
         }
         const key = nanoid(10)
-        // encrypt message and attachment chunks until delivery date 
+        const files = req.files.attachment
+        if (files) {
+            files.forEach(file => {
+                console.log(file.originalname)
+            });
+        }
         const encrypted = encrypt(message, key)
         const capsule = await Capsule.create({
             message: encrypted, deliveryDate, userId, key
