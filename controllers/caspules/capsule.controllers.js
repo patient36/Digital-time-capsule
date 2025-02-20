@@ -177,15 +177,21 @@ const getCapsule = async (req, res, next) => {
 
 const deleteCapsule = async (req, res, next) => {
     try {
-        const capsuleId = req.params.id
-        const capsule = await Capsule.findById(capsuleId)
+        const capId = req.params.id
+        const userId = req.user._id
+
+        if (!userId) {
+            return res.status(401).json({ message: "Invalid token" })
+        }
+
+        const capsule = await Capsule.findOne({ _id: capId, userId })
         if (!capsule) {
-            return res.status(404).json("Failed to delete a non-existing capsule")
+            return res.status(404).json({ message: "Failed to delete a non-existing capsule" })
         }
 
         // delete all attachments
-        // delete the capsule
-        res.status(200).json({ message: `${capsule.status} capsule  deleted` })
+        await Capsule.deleteOne({ _id: capId })
+        res.status(200).json({ message: `deleted a ${capsule.status} capsule  ` })
     } catch (error) {
         next(error)
     }

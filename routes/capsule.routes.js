@@ -12,7 +12,7 @@ capsuleRouter.get('/delivered', protect, capsuleControllers.getDeliveredCapsules
 
 capsuleRouter.get('/:id', protect, capsuleControllers.getCapsule)
 
-capsuleRouter.delete('/delete/:id', protect, capsuleControllers.deleteCapsule)
+capsuleRouter.delete('/:id', protect, capsuleControllers.deleteCapsule)
 
 
 export default capsuleRouter
