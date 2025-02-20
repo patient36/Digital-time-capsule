@@ -1,15 +1,18 @@
 import express from "express";
 import capsuleControllers from "../controllers/caspules/capsule.controllers.js";
+import { protect } from "../middlewares/auth.js";
 
 const capsuleRouter = express.Router()
 
-capsuleRouter.post('/create', capsuleControllers.createCapsule)
+capsuleRouter.post('/create', protect, capsuleControllers.createCapsule)
 
-capsuleRouter.get('/', capsuleControllers.getAllCapsules)
+capsuleRouter.get('/pending', protect, capsuleControllers.getPendingCapsules)
 
-capsuleRouter.get('/:id', capsuleControllers.getCapsule)
+capsuleRouter.get('/delivered', protect, capsuleControllers.getDeliveredCapsules)
 
-capsuleRouter.delete('/delete/:id', capsuleControllers.deleteCapsule)
+capsuleRouter.get('/:id', protect, capsuleControllers.getCapsule)
+
+capsuleRouter.delete('/delete/:id', protect, capsuleControllers.deleteCapsule)
 
 
 export default capsuleRouter
