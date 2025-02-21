@@ -6,7 +6,7 @@ import connectDB from "./config/db.js"
 import { notFound, errorHandler } from "./middlewares/error.js"
 import authRouter from "./routes/auth.routes.js"
 import capsuleRouter from "./routes/capsule.routes.js"
-import streamRouter from "./routes/stream.attachment.js"
+import streamRouter from "./routes/attachment.routes.js"
 
 dotenv.config()
 connectDB()

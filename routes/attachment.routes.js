@@ -10,7 +10,8 @@ streamRouter.get("/:id", async (req, res, next) => {
     try {
         const userId = req.query.user
         const fileId = req.params.id
-        await getFile(fileId, Attachment, AttachmentChunk, res, req, next)
+        const file = await Attachment.findOne({ _id: fileId, owner: userId })
+        await getFile(file._id, Attachment, AttachmentChunk, res, req, next)
     } catch (error) {
         next(error)
     }
