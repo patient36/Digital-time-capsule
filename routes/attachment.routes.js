@@ -21,7 +21,7 @@ streamRouter.get("/:id", async (req, res, next) => {
             await getFile(fileId, Attachment, AttachmentChunk, userId, res, req, next)
         }
         else {
-            return res.status(200).json({ message: "Access denied before delivery date.", deliveryDate: capsule.deliveryDate})
+            return res.status(200).json({ message: "Access denied before delivery date.", deliveryDate: `${capsule.deliveryDate}` })
         }
     } catch (error) {
         next(error)
