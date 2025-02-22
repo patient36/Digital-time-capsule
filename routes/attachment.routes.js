@@ -17,11 +17,11 @@ streamRouter.get("/:id", async (req, res, next) => {
             return res.status(404).json({ message: "Capsule not found" });
         }
         const now = new Date()
-        if (capsule.deliveryDate > now) {
+        if (capsule.deliveryDate <= now) {
             await getFile(fileId, Attachment, AttachmentChunk, userId, res, req, next)
         }
         else {
-            return res.status(200).json({ message: "Access denied before delivery date.", deliveryDate: `${capsule.deliveryDate}` })
+            return res.status(200).json({ message: "Access denied before delivery date.", deliveryDate: capsule.deliveryDate})
         }
     } catch (error) {
         next(error)
