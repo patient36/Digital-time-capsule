@@ -1,6 +1,6 @@
-const getFile = async (id, fileModel, chunksModel, res, req, next) => {
+const getFile = async (id, fileModel, chunksModel, userId, res, req, next) => {
   try {
-    const file = await fileModel.findOne({ _id: id });
+    const file = await fileModel.findOne({ _id: id, owner: userId });
 
     if (!file) {
       console.log("File not found.");
