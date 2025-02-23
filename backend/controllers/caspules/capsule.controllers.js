@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import Capsule from "../../models/capsule.model.js";
 import User from "../../models/user.model.js";
 import { encrypt, decrypt } from "../../utils/encrpyt.js";
-import { Attachment, AttachmentChunk } from "../../models/attachment.model.js";
+import { Attachment, AttachmentChunk } from "../../models/attachment.model.js"
 import createFile from "../../utils/createFile.js";
 import deleteFile from "../../utils/deleteFile.js"
 
