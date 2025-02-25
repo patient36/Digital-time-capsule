@@ -34,6 +34,7 @@ To run this app locally:
    ```
 2. Install dependencies:
    ```bash
+   cd backend
    npm install
    ```
 3. Run the app:
